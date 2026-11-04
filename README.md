@@ -23,7 +23,7 @@ pnpm build
 Fully restart Discord. The plugin is enabled by default; use Vencord's plugin
 settings to disable it and restart if you want to compare behavior.
 
-This repository is private, so cloning requires access to it. See Vencord's
+See Vencord's
 [custom plugin guide](https://docs.vencord.dev/installing/custom-plugins/) for
 the source-build and injection workflow.
 
