@@ -6,7 +6,7 @@
   "description": "On-demand tooltips and reduced layout work in Vencord server and channel lists.",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test"
   },
   "devDependencies": {
     "esbuild": "0.28.1",
