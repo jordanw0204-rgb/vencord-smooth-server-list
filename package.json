@@ -1,12 +1,12 @@
 {
   "name": "vencord-smooth-server-list",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
-  "description": "On-demand rich tooltips and a short server hover delay for Vencord.",
+  "description": "On-demand tooltips and reduced layout work in Vencord server and channel lists.",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "test": "node --test tests/patches.test.mjs"
+    "test": "node --test tests/*.test.mjs"
   },
   "devDependencies": {
     "esbuild": "0.28.1",

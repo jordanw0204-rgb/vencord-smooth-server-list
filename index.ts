@@ -8,7 +8,7 @@ import definePlugin from "@utils/types";
 
 export default definePlugin({
     name: "SmoothServerList",
-    description: "Loads rich tooltip details on demand and delays server hover tooltips to reduce work while scrolling the server list.",
+    description: "Reduces tooltip, layout, and repeated state-update work while scrolling server and channel lists.",
     authors: [{ name: "Jordan", id: 932850077888839690n }],
     tags: ["Utility", "Servers"],
     enabledByDefault: true,
@@ -29,6 +29,26 @@ export default definePlugin({
                     replace: "$1delay:200,"
                 }
             ]
+        },
+        {
+            find: "topOffsetsBySurface",
+            replacement: {
+                // ResizeObserver can report the same bottom offset repeatedly.
+                // Returning the existing state avoids notifying every subscriber.
+                match: /(\i\.setState\((\i)=>\{)(?=let (\i)=new Map\(\2\.topOffsetsBySurface\.get\((\i)\)\);null==(\i)\?\3\.delete\((\i)\):\3\.set\(\6,\5\);)/,
+                replace: "$1if($5==null?!$2.topOffsetsBySurface.get($4)?.has($6):$2.topOffsetsBySurface.get($4)?.get($6)===$5)return $2;"
+            }
+        },
+        {
+            find: "stopTrackingTargetPosition",
+            replacement: {
+                // Comparing old/new props that reference the same DOM target
+                // reads its current rectangle twice, often flushing layout just
+                // after the layer wrote its position. Those rectangles are equal.
+                // Real prop/target changes and native resize tracking still run.
+                match: /((\i)\((\i)\)!==\2\(this\.props\)\|\|)(\((\i)=this\.props,(\i)=(\i)\(\3\),(\i)=\7\(\5\),\6\.top!==\8\.top\|\|\6\.left!==\8\.left\))/,
+                replace: "$1(($3.targetRef?.current!==this.props.targetRef?.current||$3.overrideTargetRect!==this.props.overrideTargetRect)&&$4)"
+            }
         }
     ]
 });
